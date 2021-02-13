@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Login</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<!--[if ie]><meta content='IE=8' http-equiv='X-UA-Compatible'/><![endif]-->
+		<!-- bootstrap -->
+		<link href="{% static 'bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+		<link href="{% static 'bootstrap/css/bootstrap-responsive.min.css'%}" rel="stylesheet">
+		<link href="{% static 'themes/css/bootstrappage.css'%}" rel="stylesheet"/>
+		
+		<!-- global styles -->
+		<link href="{% static 'themes/css/flexslider.css'%}" rel="stylesheet"/>
+		<link href="{% static 'themes/css/main.css'%}" rel="stylesheet"/>
+
+		<!-- scripts -->
+		<script src="{% static 'themes/js/jquery-1.7.2.min.js'%}"></script>
+		<script src="{% static 'bootstrap/js/bootstrap.min.js'%}"></script>
+		<script src="{% static 'themes/js/superfish.js'%}"></script>
+		<script src="{% static 'themes/js/jquery.scrolltotop.js'%}"></script>
+		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+		<!--[if lt IE 9]>			
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+			<script src="{% static 'js/respond.min.js'%}"></script>
+		<![endif]-->
+	</head>
+    <body>		
+		<div id="top-bar" class="container">
+			<div class="row">
+				<div class="span3">
+					<form method="get" action="{% url 'searchapp:SearchResult'%}" class="search_form">
+						{% csrf_token %}
+						<input type="text" class="input-block-level search-query span3" Placeholder="eg. T-sirt" name="q">
+						<button class="btn btn-outline-success my-2 my-sm-0 account pull-right" type="submit"><i class="fas fa-search"></i></button>
+					</form>
+				</div>
+				<div class="span9">
+					<div class="account pull-right">
+						<ul class="user-menu">				
+<!--							<li><a href="#">My Account</a></li>-->
+							<li><a href="{% url 'cartapp:cart_detail'%}}">Your Cart {% if item_count > 0 %}<i class="fas fa-shopping-cart">{{item_count}}</i>{% endif %}</a></li>
+							{% if user.is_authenticated %}
+							<li>{{user.first_name}} {{user.last_name}}</li>
+							<li><a href="{% url 'registerapp:logout' %}">Logout</a></li>
+							{% else %}
+							<li><a href="{% url 'registerapp:register'%}}">Login</a></li>
+							{% endif %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="wrapper" class="container">
+			<section class="navbar main-menu">
+				<div class="navbar-inner main-menu">				
+					<a href="index.html" class="logo pull-left"><img src="{% static 'themes/images//logo.png'%}" class="site_logo" alt=""></a>
+					<nav id="menu" class="pull-right">
+						<ul>
+							<li><a href="{% url 'ecommerceapp:AllProCat'%}">Home</a>
+<!--								<ul>-->
+<!--									<li><a href="./products.html">Lacinia nibh</a></li>									-->
+<!--									<li><a href="./products.html">Eget molestie</a></li>-->
+<!--									<li><a href="./products.html">Varius purus</a></li>									-->
+<!--								</ul>-->
+							</li>															
+<!--							<li><a href="./products.html">Man</a></li>			-->
+							<li><a href="">Categories</a>
+								<ul>									
+									<li><a href="{% url 'ecommerceapp:AllProCat'%}">All Products</a></li>
+									{% for link in links %}
+									<li><a href="{{link.get_url}}">{{link.name}}</a></li>
+<!--									<li><a href="./products.html">Cold Weather</a></li>-->
+									{% endfor %}
+								</ul>
+							</li>							
+<!--							<li><a href="./products.html">Hangbag</a></li>-->
+<!--							<li><a href="./products.html">Best Seller</a></li>-->
+<!--							<li><a href="./products.html">Top Seller</a></li>-->
+						</ul>
+					</nav>
+				</div>
+			</section>			
+			<section class="header_text sub">
+<!--			<img class="pageBanner" src="themes/images/pageBanner.png" alt="New products" >-->
+				<h4><span>Login or Regsiter</span></h4>
+			</section>			
+			<section class="main-content">				
+				<div class="row">
+					<div class="span5">					
+						<h4 class="title"><span class="text"><strong>Login</strong> Form</span></h4>
+						<form action="login" method="post">
+							{% csrf_token %}
+							<input type="hidden" name="next" value="/">
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label">Username <span style="color:red">*</span></label>
+									<div class="controls">
+										<input type="text" placeholder="Enter your Username" name="username" class="input-xlarge">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Password <span style="color:red">*</span></label>
+									<div class="controls">
+										<input type="password" placeholder="Enter your Password" name="password" class="input-xlarge">
+									</div>
+								</div>
+								<div class="control-group">
+									<input tabindex="3" class="btn btn-inverse large" type="submit" value="Sign into your account">
+									<hr>
+<!--									<p class="reset">Recover your <a tabindex="4" href="#" title="Recover your username or password">username or password</a></p>-->
+								</div>
+							</fieldset>
+						</form>				
+					</div>
+					<div class="span7">					
+						<h4 class="title"><span class="text"><strong>Register</strong> Form</span></h4>
+						<form action="register" method="post" class="form-stacked">
+							{% csrf_token %}
+							<fieldset>
+								<div class="control-group">
+									<label class="control-label">First Name <span style="color:red">*</span>: </label>
+									<div class="controls">
+										<input type="text" placeholder="Enter your First Name" name="first_name" class="input-xlarge">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Last Name <span style="color:red">*</span>: </label>
+									<div class="controls">
+										<input type="text" placeholder="Enter your Last Name" name="last_name" class="input-xlarge">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Username <span style="color:red">*</span>:</label>
+									<div class="controls">
+										<input type="text" placeholder="Enter your Username" name="username" class="input-xlarge">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Paswword <span style="color:red">*</span>:</label>
+									<div class="controls">
+										<input type="password" placeholder="Enter your Password" name="password1" class="input-xlarge">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Confirm Password <span style="color:red">*</span>:</label>
+									<div class="controls">
+										<input type="password" placeholder="Re-enter your Password" name="password2" class="input-xlarge">
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Email <span style="color:red">*</span>:</label>
+									<div class="controls">
+										<input type="email" placeholder="Enter your Email" name="email" class="input-xlarge">
+									</div>
+								</div>
+
+								<hr>
+								<div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="Create your account"></div>
+							</fieldset>
+						</form>
+						<div class="control-group">
+							{% for message in messages %}
+							<p><h4><strong>{{message}}</strong></h4></p>
+							{% endfor %}
+						</div>
+					</div>				
+				</div>
+			</section>			
+			<section id="footer-bar">
+				<div class="row">
+					<div class="span3">
+						<h4>Navigation</h4>
+						<ul class="nav">
+							<li><a href="./index.html">Homepage</a></li>  
+							<li><a href="./about.html">About Us</a></li>
+							<li><a href="./contact.html">Contac Us</a></li>
+							<li><a href="./cart.html">Your Cart</a></li>
+							<li><a href="./register.html">Login</a></li>							
+						</ul>					
+					</div>
+					<div class="span4">
+<!--						<h4>My Account</h4>-->
+<!--						<ul class="nav">-->
+<!--							<li><a href="#">My Account</a></li>-->
+<!--							<li><a href="#">Order History</a></li>-->
+<!--							<li><a href="#">Wish List</a></li>-->
+<!--							<li><a href="#">Newsletter</a></li>-->
+<!--						</ul>-->
+					</div>
+					<div class="span5">
+						<p class="logo"><img src="{% static 'themes/images/logo.png'%}" class="site_logo" alt=""></p>
+						<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. the  Lorem Ipsum has been the industry's standard dummy text ever since the you.</p>
+						<br/>
+						<span class="social_icons">
+							<a class="facebook" href="#">Facebook</a>
+							<a class="twitter" href="#">Twitter</a>
+							<a class="skype" href="#">Skype</a>
+							<a class="vimeo" href="#">Vimeo</a>
+						</span>
+					</div>					
+				</div>	
+			</section>
+			<section id="copyright">
+				<span>&copy My Project All right reserved.</span>
+			</section>
+		</div>
+		<script src="{% static 'themes/js/common.js'%}"></script>
+		<script>
+			$(document).ready(function() {
+				$('#checkout').click(function (e) {
+					document.location.href = "checkout.html";
+				})
+			});
+		</script>		
+    </body>
+</html>
